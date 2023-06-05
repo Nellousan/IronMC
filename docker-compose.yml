@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+    iron_mc:
+        build: .
+        environment:
+            JAEGER_ADDRESS: jaeger:6831
+        ports:
+            - 25565:25565
+        networks:
+            - jaeger
+        restart: unless-stopped
+
+    jaeger:
+        image: jaegertracing/all-in-one:1.43.0
+        expose:
+            - "16686"
+            - "14268"
+            - "6831/udp"
+            - "6832/udp"
+        ports:
+            - "16686:16686"
+        networks:
+            - jaeger
+
+networks:
+    jaeger: null
